@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('invatations', function (Blueprint $table) {
             $table->id();
-            $table->unsignBigInteger("user_id");
+            $table->unsignedBigInteger("user_id");
             $table->string("to");
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
