@@ -8,7 +8,7 @@ class InvitationController extends Controller
 {
     //
 
-    public function createInvitation(Request $request){
+    public function store(Request $request){
         $validator =  validator($request->all(),[
             "user_id" => "required|exists:invitations,user_id",
             "to" => "required"
@@ -26,6 +26,44 @@ class InvitationController extends Controller
             "ok"=>true,
             "message" => "Created successfully",
             "data" => $invitation
+        ], 200);
+    }
+
+    public function index(){
+        $invitation = Invitation::with(['users'])->get();
+        return response()->json([
+            'ok' => true,
+            'message' => 'Retrieved Successfully',
+            'data' => $invitation
+        ], 200);
+    }
+
+    public function update(Request $request, Invitation $invitation){
+        $validator =  validator($request->all(),[
+            "user_id" => "required|exists:invitations,user_id",
+            "to" => "required"
+        ]);
+        if($validator->validated()){
+            return response()->json([
+                "ok"=>false,
+                "message" => "Request didn't pass validation!",
+                "errors" => $validator->errors()
+            ], 400);
+        }
+        $invitation->update($validator->validated());
+        return response()->json([
+            "ok"=>true,
+            "message" => "Updated successfully",
+            "data" => $invitation
+        ], 200);
+        
+    }
+
+    public function destroy(Request $request, Invitation $invitation){
+        return response()->json([
+            "ok"=>true,
+            "message" => "Deleted successfully",
+            "data" => $invitation->delete()
         ], 200);
     }
 }
