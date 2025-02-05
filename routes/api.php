@@ -14,5 +14,5 @@ Route::prefix('/invitations')->middleware(['auth:api'])->group(function(){
     Route::get('/',[InvitationController::class,'index']);
     Route::post('/',[InvitationController::class,'store']);
     Route::patch('/{invitation}',[InvitationController::class,'update']);
-    Route::delete('/{invitations}',[InvitationController::class,'destroy']);
+    Route::delete('/{invitation}',[InvitationController::class,'destroy']);
 });

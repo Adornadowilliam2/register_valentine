@@ -30,7 +30,7 @@ class InvitationController extends Controller
     }
 
     public function index(){
-        $invitation = Invitation::with(['users'])->get();
+        $invitation = Invitation::with(['user'])->get();
         return response()->json([
             'ok' => true,
             'message' => 'Retrieved Successfully',
@@ -39,17 +39,18 @@ class InvitationController extends Controller
     }
 
     public function update(Request $request, Invitation $invitation){
-        $validator =  validator($request->all(),[
-            "user_id" => "required|exists:invitations,user_id",
-            "to" => "required"
+        $validator = validator($request->all(),[
+            "user_id" => "required|exists:users,id",
+            "to" => "required|unique:invitations,to" 
         ]);
-        if($validator->validated()){
+        if($validator->fails()){
             return response()->json([
                 "ok"=>false,
                 "message" => "Request didn't pass validation!",
                 "errors" => $validator->errors()
             ], 400);
         }
+
         $invitation->update($validator->validated());
         return response()->json([
             "ok"=>true,
