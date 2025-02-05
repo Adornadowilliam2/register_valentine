@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+
 class AuthController extends Controller
 {
     //
@@ -21,7 +22,8 @@ class AuthController extends Controller
                 "errors" => $validator->errors()
             ], 400);
         }
-        $user = User::created($validator->validated());
+        $user = User::create($validator->validated());
+
         $user->token = $user->createToken("api-token")->accessToken;
         return response()->json([
             "ok"=>true,
@@ -61,7 +63,7 @@ class AuthController extends Controller
         }
 
         if(auth()->attempt($validator->validated())){
-            $user = auth()->token();
+            $user = auth()->user();
             $user->token = $user->createToken("api-token")->accessToken;
             return response()->json([
                 "ok"=>true,

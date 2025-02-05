@@ -10,7 +10,7 @@ class InvitationController extends Controller
 
     public function store(Request $request){
         $validator =  validator($request->all(),[
-            "user_id" => "required|exists:invitations,user_id",
+            "user_id" => "required|exists:users,user_id",
             "to" => "required"
         ]);
         if($validator->validated()){

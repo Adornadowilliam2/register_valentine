@@ -11,4 +11,8 @@ class Invitation extends Model
         "user_id",
         "to"
     ];
+
+    public function users(){
+        return $this->belongsTo(User::class);
+    }
 }
