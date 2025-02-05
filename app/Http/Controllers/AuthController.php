@@ -73,8 +73,7 @@ class AuthController extends Controller
         }
         return response()->json([
             "ok"=>false,
-            "message" => "Request didn't pass validation!",
-            "errors" => $validator->errors()
+            "message" => "Wrong email or password, please try again!",
         ], 400);
     }
 }

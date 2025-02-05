@@ -10,10 +10,10 @@ class InvitationController extends Controller
 
     public function store(Request $request){
         $validator =  validator($request->all(),[
-            "user_id" => "required|exists:users,user_id",
-            "to" => "required"
+            "user_id" => "required|exists:users,id",
+            "to" => "required|unique:invitations,to"
         ]);
-        if($validator->validated()){
+        if($validator->fails()){
             return response()->json([
                 "ok"=>false,
                 "message" => "Request didn't pass validation!",
@@ -26,7 +26,7 @@ class InvitationController extends Controller
             "ok"=>true,
             "message" => "Created successfully",
             "data" => $invitation
-        ], 200);
+        ], 201);
     }
 
     public function index(){
